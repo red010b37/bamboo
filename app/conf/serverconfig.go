@@ -45,18 +45,18 @@ func LoadServerConfig() (ServerConfig, error) {
 }
 
 // parseServerConfig takes ServerConfig, parses and returns serverconf
-func parseServerConfig(serverconf ServerConfig) ServerConfig {
+func parseServerConfig(serverConf ServerConfig) ServerConfig {
 
-	serverconf.ManagerAPIPort = viper.GetInt64("managerApiPort")
-	serverconf.LatestReleaseAPI = viper.GetString("latestReleaseAPI")
-	serverconf.ReleaseAPI = viper.GetString("releaseAPI")
-	serverconf.DaemonHeartbeat = viper.GetInt64("daemonHeartbeat")
+	serverConf.ManagerAPIPort = viper.GetInt64("managerApiPort")
+	serverConf.LatestReleaseAPI = viper.GetString("latestReleaseAPI")
+	serverConf.ReleaseAPI = viper.GetString("releaseAPI")
+	serverConf.DaemonHeartbeat = viper.GetInt64("daemonHeartbeat")
 
-	serverconf.LivePort = viper.GetInt64("navCoinPorts.livePort")
-	serverconf.TestPort = viper.GetInt64("navCoinPorts.testnetPort")
-	serverconf.UseTestnet = viper.GetBool("useTestnet")
+	serverConf.LivePort = viper.GetInt64("navCoinPorts.livePort")
+	serverConf.TestPort = viper.GetInt64("navCoinPorts.testnetPort")
+	serverConf.UseTestnet = viper.GetBool("useTestnet")
 
-	return serverconf
+	return serverConf
 
 }
 
