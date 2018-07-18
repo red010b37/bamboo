@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/red010b37/bamboo/app/middleware"
+	"github.com/red010b37/bamboo/app_pi/middleware"
 	"github.com/gorilla/mux"
 )
 
@@ -30,11 +30,12 @@ type errorCode struct {
 
 // appErrorsStruct defines errors, errorCodes
 type appErrorsStruct struct {
-	LoginError       errorCode
-	InvalidStrength  errorCode
-	ServerError      errorCode
-	RPCResponseError errorCode
-	JSONDecodeError  errorCode
+	LoginError             errorCode
+	InvalidStrength        errorCode
+	ServerError            errorCode
+	SetupAPIUsingLocalHost errorCode
+	SetupAPINoHost         errorCode
+	SetupAPIProtectUI      errorCode
 }
 
 // AppRespErrors variable
@@ -49,31 +50,45 @@ func BuildAppErrors() {
 	AppRespErrors.ServerError = errorCode{"SERVER_ERROR", "There was an unexpected error - please try again"}
 	AppRespErrors.InvalidStrength = errorCode{"INVALID_STRENGTH", ""}
 
-	// RPC Errors
-	AppRespErrors.RPCResponseError = errorCode{"RPC_RESPONSE_ERROR", "There was an RPC response error"}
+	// Setup API Errors
+	AppRespErrors.SetupAPIUsingLocalHost = errorCode{"SETUP_HOST_NOT_FOUND", "The host was not found"}
+	AppRespErrors.SetupAPINoHost = errorCode{"SETUP_USING_LOCAL_HOST", "You are using localhost, please use 127.0.01 or your network ip address"}
+	AppRespErrors.SetupAPIProtectUI = errorCode{"SETUP_MISSING_USERNAME_PASSWORD", "You are missing the username and/or password"}
 
 	// Login Errors
 	AppRespErrors.LoginError = errorCode{"LOGIN_ERROR", "Your username and/or password is wrong"}
-
-	// JSON Errors
-	AppRespErrors.JSONDecodeError = errorCode{"JSON_DECODE_ERROR", "Unable to decode JSON"}
 }
 
-// RouteBuilder takes prefix, namespace, version, and method params :: returns formatted route
+// InitMetaHandlers starts the meta api handlers
+func InitMetaHandlers(r *mux.Router, prefix string) {
+	nameSpace := "meta"
+	r.Handle(fmt.Sprintf("/%s/%s/v1/errorcode", prefix, nameSpace), middleware.Adapt(metaErrorDisplayHandler()))
+}
+
+// metaErrorDisplayHandler displays all the application errors to frontend
+func metaErrorDisplayHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		appResp := Response{}
+		appResp.Data = AppRespErrors
+		appResp.Send(w)
+
+	})
+}
+
 func RouteBuilder(prefix string, namespace string, version string, method string) string {
 	route := fmt.Sprintf("/%s/%s/%s/%s", prefix, namespace, version, method)
 	log.Println(route)
 	return route
 }
 
-// OpenRouteHandler is utilised for unprotected routes (non-JWT)
-func OpenRouteHandler(path string, r *mux.Router, f http.Handler) {
+func OpenRouteHandler(path string, r *mux.Router,  f http.Handler) {
 	r.Handle(path, middleware.Adapt(f, middleware.CORSHandler()))
 }
 
-// func ProtectedRouteHandler(path string, r *mux.Router, f http.Handler, method string) {
-// 	r.Handle(path, middleware.Adapt(f,
-// 		middleware.CORSHandler(),
-// 		middleware.JwtHandler())).
-// 		Methods(method)
-// }
+func ProtectedRouteHandler(path string, r *mux.Router,  f http.Handler,  method string ) {
+	r.Handle(path, middleware.Adapt(f,
+		middleware.CORSHandler(),
+		middleware.JwtHandler())).
+		Methods(method)
+}

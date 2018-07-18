@@ -1,6 +1,6 @@
 package daemonapi
 
-import "github.com/red010b37/bamboo/app/conf"
+import "github.com/red010b37/bamboo/app_pi/conf"
 
 // NavConfig holds pointer to NavConfig
 // RPCUser     string `json:"rpcUser"`

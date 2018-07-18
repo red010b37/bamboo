@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/red010b37/bamboo/app/api"
-	"github.com/red010b37/bamboo/app/conf"
-	"github.com/red010b37/bamboo/app/utils"
+	"github.com/red010b37/bamboo/app_pi/api"
+	"github.com/red010b37/bamboo/app_pi/conf"
+	"github.com/red010b37/bamboo/app_pi/utils"
 	"github.com/gorilla/mux"
 )
 

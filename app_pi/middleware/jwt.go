@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/red010b37/bamboo/app/conf"
+	"github.com/red010b37/bamboo/app_pi/conf"
 	"github.com/dgrijalva/jwt-go"
 )
 

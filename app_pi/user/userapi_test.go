@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/red010b37/bamboo/app/api"
-	"github.com/red010b37/bamboo/app/conf"
+	"github.com/red010b37/bamboo/app_pi/api"
+	"github.com/red010b37/bamboo/app_pi/conf"
 	"github.com/appleboy/gofight"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/stretchr/testify/assert"

@@ -8,7 +8,7 @@ import (
 
 	"fmt"
 
-	"github.com/red010b37/bamboo/app/conf"
+	"github.com/red010b37/bamboo/app_pi/conf"
 )
 
 type RpcRequestData struct {

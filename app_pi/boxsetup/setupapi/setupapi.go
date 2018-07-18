@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/red010b37/bamboo/app/api"
-	"github.com/red010b37/bamboo/app/conf"
-	"github.com/red010b37/bamboo/app/middleware"
+	"github.com/red010b37/bamboo/app_pi/api"
+	"github.com/red010b37/bamboo/app_pi/conf"
+	"github.com/red010b37/bamboo/app_pi/middleware"
 	"github.com/gorilla/mux"
 	"github.com/muesli/crunchy"
 )

@@ -9,9 +9,9 @@ import (
 	"io"
 	"io/ioutil"
 
-	"github.com/red010b37/bamboo/app/api"
-	"github.com/red010b37/bamboo/app/conf"
-	"github.com/red010b37/bamboo/app/daemon/daemonrpc"
+	"github.com/red010b37/bamboo/app_pi/api"
+	"github.com/red010b37/bamboo/app_pi/conf"
+	"github.com/red010b37/bamboo/app_pi/daemon/daemonrpc"
 )
 
 // InitChainHandlers sets up handlers for the blockchain rpc interface

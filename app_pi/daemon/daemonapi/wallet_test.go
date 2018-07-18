@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/red010b37/bamboo/app/api"
+	"github.com/red010b37/bamboo/app_pi/api"
 	"github.com/appleboy/gofight"
 	"github.com/stretchr/testify/assert"
 )

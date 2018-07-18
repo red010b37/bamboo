@@ -1,6 +1,6 @@
 package conf
 
-import "github.com/red010b37/bamboo/app/utils"
+import "github.com/red010b37/bamboo/app_pi/utils"
 
 // NavConfig defines a structure to store rpc data
 type NavConfig struct {

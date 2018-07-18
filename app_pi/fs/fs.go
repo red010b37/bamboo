@@ -15,12 +15,13 @@ import (
 	"github.com/dustin/go-humanize"
 )
 
-// WriteCounter counts the number of bytes written to it
+// WriteCounter counts the number of bytes written to it. It implements to the io.Writer
+// interface and we can pass this into io.TeeReader() which will report progress on each
+// write cycle.
 type WriteCounter struct {
 	Total uint64
 }
 
-// wc writes bytes and prints progress
 func (wc *WriteCounter) Write(p []byte) (int, error) {
 	n := len(p)
 	wc.Total += uint64(n)
@@ -36,6 +37,44 @@ func (wc WriteCounter) PrintProgress() {
 
 	// We use the humanize package to print the bytes in a meaningful way (e.g. 10 MB)
 	fmt.Printf("\rDownloading... %s complete", humanize.Bytes(wc.Total))
+}
+
+// DownloadFile will download a url to a local file.
+// efficiently writes as it downloads instead of loading file in memory
+// io.TeeReader is passed into Copy() to report progress on the download
+func DownloadFile(filepath string, url string) error {
+
+	// Create the file, but give it a tmp file extension, this means we won't overwrite a
+	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
+	out, err := os.Create(filepath + ".tmp")
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	// Get the data
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Create our progress reporter and pass it to be used alongside our writer
+	counter := &WriteCounter{}
+	_, err = io.Copy(out, io.TeeReader(resp.Body, counter))
+	if err != nil {
+		return err
+	}
+
+	// The progress use the same line so print a new line once it's finished downloading
+	fmt.Print("\n")
+
+	err = os.Rename(filepath+".tmp", filepath)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // DownloadExtract sets up and runs the functions
@@ -58,25 +97,6 @@ func DownloadExtract(url string, assetName string) error {
 
 	return nil
 
-}
-
-// CreateDataDir makes a directory for the data dir
-// of active coin's daemon at app's path context
-func CreateDataDir(dirPath string) {
-
-	path, err := GetCurrentPath()
-	if err != nil {
-		log.Println(err)
-	}
-
-	// build the path for current daemon
-	path += dirPath
-
-	err = os.MkdirAll(path, 0777)
-
-	if err != nil {
-		log.Println(err)
-	}
 }
 
 // Download performs file download of the given url
@@ -109,8 +129,6 @@ func Download(url string, downloadTofileName string) {
 // Extract will call Unzip or Untar depending on the detected file extension
 func Extract(assetName string, downloadLocation string, extractPath string) {
 
-	log.Println("Extracting " + assetName + " from " + extractPath + " to " + downloadLocation)
-
 	switch filepath.Ext(assetName) {
 	case ".zip":
 		Unzip(downloadLocation, extractPath)
@@ -125,7 +143,7 @@ func Extract(assetName string, downloadLocation string, extractPath string) {
 // Unzip takes a src and destination path and unzips accordingly
 func Unzip(src, dest string) error {
 
-	log.Println("Unzip " + src + " from " + dest)
+	log.Println("Unzip the zip file from " + dest)
 
 	r, err := zip.OpenReader(src)
 	if err != nil {
@@ -171,13 +189,9 @@ func Unzip(src, dest string) error {
 	return nil
 }
 
-// Untar takes a gzStream and destination path;
-// opens gzStream, creates new reader, checks headers
-// passes on target and header to
+// Untar takes a destination path and a reader; a tar reader loops over the tarfile
+// creating the file structure at 'dst' along the way, and writing any files
 func Untar(gzStream string, dst string) error {
-
-	log.Println("Untar the " + gzStream + " to " + dst)
-
 	r, err := os.Open(gzStream)
 	gzr, err := gzip.NewReader(r)
 
@@ -190,16 +204,28 @@ func Untar(gzStream string, dst string) error {
 
 	for {
 		header, err := tr.Next()
+
 		switch {
+
+		// if no more files are found return
 		case err == io.EOF:
 			return nil
+
+			// return any other error
 		case err != nil:
 			return err
+
+			// if the header is nil, just skip it (not sure how this happens)
 		case header == nil:
 			continue
 		}
 
+		// the target location where the dir/file should be created
 		target := filepath.Join(dst, header.Name)
+
+		// the following switch could also be done using fi.Mode(), not sure if there
+		// a benefit of using one vs. the other.
+		// fi := header.FileInfo()
 
 		// check the file type
 		switch header.Typeflag {
@@ -225,7 +251,6 @@ func Untar(gzStream string, dst string) error {
 				return err
 			}
 		}
-
 	}
 }
 
@@ -236,7 +261,6 @@ func GetCurrentPath() (string, error) {
 		return "", err
 	}
 	exPath := filepath.Dir(ex)
-	log.Println("GetCurrentPath = " + exPath)
 	return exPath, nil
 }
 
