@@ -217,6 +217,11 @@ func startCoinDaemons(coinData conf.CoinData, daemonPath string) *exec.Cmd {
 
 	if coinData.UseTestNet {
 		cmdStr = append(cmdStr, "-testnet")
+		log.Println("------------------------------------")
+		log.Println("   " + coinData.CurrencyCode + " is starting in TESTNET MODE  ")
+		log.Println("------------------------------------")
+
+
 	}
 
 	if coinData.IndexTransactions {
@@ -242,6 +247,7 @@ func startCoinDaemons(coinData conf.CoinData, daemonPath string) *exec.Cmd {
 	return cmd
 
 }
+
 
 // getOSInfo supplies current OS info and the Daemon name for said OS
 func getOSInfo(coinData conf.CoinData) OSInfo {
