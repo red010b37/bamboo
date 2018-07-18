@@ -14,8 +14,8 @@ import (
 
 	"fmt"
 
-	"github.com/red010b37/bamboo/app/conf"
-	"github.com/red010b37/bamboo/app/fs"
+	"github.com/red010b37/bamboo/cmd/app/conf"
+	"github.com/red010b37/bamboo/cmd/app/fs"
 )
 
 // OSInfo defines OS's

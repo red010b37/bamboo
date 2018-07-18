@@ -8,9 +8,9 @@ import (
 
 	"io/ioutil"
 
-	"github.com/red010b37/bamboo/app/api"
-	"github.com/red010b37/bamboo/app/conf"
-	"github.com/red010b37/bamboo/app/daemon/daemonrpc"
+	"github.com/red010b37/bamboo/cmd/app/api"
+	"github.com/red010b37/bamboo/cmd/app/conf"
+	"github.com/red010b37/bamboo/cmd/app/daemon/daemonrpc"
 	"github.com/gorilla/mux"
 )
 

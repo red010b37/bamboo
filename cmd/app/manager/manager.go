@@ -3,9 +3,9 @@ package manager
 import (
 	"log"
 
-	"github.com/red010b37/bamboo/app/conf"
-	"github.com/red010b37/bamboo/app/daemon"
-	"github.com/red010b37/bamboo/app/daemon/daemonapi"
+	"github.com/red010b37/bamboo/cmd/app/conf"
+	"github.com/red010b37/bamboo/cmd/app/daemon"
+	"github.com/red010b37/bamboo/cmd/app/daemon/daemonapi"
 	"github.com/gorilla/mux"
 )
 

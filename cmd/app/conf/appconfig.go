@@ -8,6 +8,7 @@ import (
 // at present all config is mapped to Coins array
 type AppConfig struct {
 	Coins []CoinData `json:"coins"`
+
 }
 
 // Coins defines properties of active coin
@@ -34,7 +35,7 @@ func LoadAppConfig() error {
 
 	viper.SetConfigName("app-config")
 	viper.AddConfigPath("./")
-	viper.AddConfigPath("./app")
+	viper.AddConfigPath("./cmd")
 	viper.AddConfigPath(".")
 
 	err := viper.ReadInConfig()

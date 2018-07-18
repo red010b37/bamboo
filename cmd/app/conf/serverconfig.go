@@ -15,7 +15,7 @@ func LoadServerConfig() error {
 	viper.SetConfigName("server-config")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("./")
-	viper.AddConfigPath("./app")
+	viper.AddConfigPath("./cmd")
 	viper.AddConfigPath("../")
 
 	err := viper.ReadInConfig()

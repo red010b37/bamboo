@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/red010b37/bamboo/app/conf"
+	"github.com/red010b37/bamboo/cmd/app/conf"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/jarcoal/httpmock.v1"
 )

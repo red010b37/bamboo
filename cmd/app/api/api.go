@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/red010b37/bamboo/app/middleware"
+	"github.com/red010b37/bamboo/cmd/app/middleware"
 	"github.com/gorilla/mux"
 )
 

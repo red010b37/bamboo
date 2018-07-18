@@ -2,9 +2,8 @@ package api
 
 import (
 	"net/http"
-
-	"github.com/red010b37/bamboo/app/conf"
 	"github.com/gorilla/mux"
+	"github.com/red010b37/bamboo/cmd/app/conf"
 )
 
 // InitMetaHandlers starts the meta api handlers
