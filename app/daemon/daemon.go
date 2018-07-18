@@ -22,6 +22,7 @@ import (
 const (
 	WindowsDaemonName string = "navcoind.exe"
 	DarwinDaemonName  string = "navcoind"
+	linuxDaemonName  string = "navcoind"
 )
 
 type OSInfo struct {
@@ -117,7 +118,7 @@ func StartManager() {
 	if conf.ServerConf.DaemonHeartbeat > hbInterval {
 		hbInterval = conf.ServerConf.DaemonHeartbeat
 	}
-
+	/*
 	ticker := time.NewTicker(time.Duration(hbInterval) * time.Millisecond)
 	go func() {
 		for range ticker.C {
@@ -151,6 +152,16 @@ func StartManager() {
 
 		}
 	}()
+	*/
+	// start the daemon and download it if necessary
+	cmd, err := DownloadAndStart(conf.ServerConf, conf.AppConf)
+
+	if err != nil {
+		log.Println(err)
+	} else {
+		runningDaemon = cmd
+	}
+
 }
 
 // isAlive performs a simple rpc command to the Daemon
@@ -264,6 +275,10 @@ func getOSInfo() OSInfo {
 	case "amd64":
 
 		switch runtime.GOOS {
+
+		case "linux":
+			osInfo.DaemonName = linuxDaemonName
+			osInfo.OS = "x86_64-linux"
 
 		case "windows":
 
