@@ -259,6 +259,11 @@ func getOSInfo(coinData conf.CoinData) OSInfo {
 
 		switch runtime.GOOS {
 
+		case "linux":
+			osInfo.DaemonName = coinData.LinuxDaemonName
+			osInfo.OS = "x86_64-linux"
+			break
+
 		case "windows":
 			osInfo.DaemonName = coinData.WindowsDaemonName
 			osInfo.OS = "win64"
@@ -363,13 +368,12 @@ func getDownloadPathAndName(coinData conf.CoinData, gitHubReleaseData GitHubRele
 					downloadPath = releaseInfo.Assets[e].BrowserDownloadURL
 					downloadName = releaseInfo.Assets[e].Name
 				}
-			}
-			// osx64 check to provide gzip package :: tar.gz
-			if strings.Contains(asset.Name, "osx64") {
-				log.Println("osx64 detected - preparing " + coinData.CurrencyCode + " daemon tar.gz download")
+			}else {
+				log.Println("unix/linux detected - preparing " + coinData.CurrencyCode + " daemon tar.gz download")
 				downloadPath = releaseInfo.Assets[e].BrowserDownloadURL
 				downloadName = releaseInfo.Assets[e].Name
 			}
+
 
 		}
 	}

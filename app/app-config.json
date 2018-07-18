@@ -9,12 +9,13 @@
         "daemonVersion": "4.2.1",
         "WindowsDaemonName": "navcoind.exe",
         "DarwinDaemonName": "navcoind",
+        "LinuxDaemonName": "navcoind",
         "latestReleaseAPI": "https://api.github.com/repos/NAVCoin/navcoin-core/releases/latest",
         "releaseAPI": "https://api.github.com/repos/NAVCoin/navcoin-core/releases",
         "livePort": 44444,
         "testnetPort": 44445,
         "useTestNet" : false,
-        "indexTransactions": true
+        "indexTransactions": false
       }
     ]
 

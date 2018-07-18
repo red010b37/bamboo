@@ -20,6 +20,7 @@ type CoinData struct {
 	DaemonVersion     string `json:"daemonVersion"`
 	WindowsDaemonName string `json:"windowsDaemonName"`
 	DarwinDaemonName  string `json:"darwinDaemonName"`
+	LinuxDaemonName   string `json:"linuxDaemonName"`
 	LatestReleaseAPI  string `json:"latestReleaseApi"`
 	ReleaseAPI        string `json:"ReleaseApi"`
 	LivePort          int    `json:"livePort"`
